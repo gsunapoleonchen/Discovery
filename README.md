@@ -3,9 +3,9 @@
 ![](http://nepxion.gitee.io/docs/discovery-doc/Banner.png)
 
 # Discovery【探索】微服务企业级解决方案
-[![Total lines](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines)](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines)  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?label=license)](https://github.com/Nepxion/Discovery/blob/master/LICENSE)  [![Maven Central](https://img.shields.io/maven-central/v/com.nepxion/discovery.svg?label=maven%20central)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.nepxion%22%20AND%20discovery)  [![Javadocs](http://www.javadoc.io/badge/com.nepxion/discovery-plugin-framework.svg)](http://www.javadoc.io/doc/com.nepxion/discovery-plugin-framework)  [![Build Status](https://travis-ci.org/Nepxion/Discovery.svg?branch=master)](https://travis-ci.org/Nepxion/Discovery)  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8e39a24e1be740c58b83fb81763ba317)](https://www.codacy.com/project/HaojunRen/Discovery/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Nepxion/Discovery&amp;utm_campaign=Badge_Grade_Dashboard)  [![Stars](https://img.shields.io/github/stars/Nepxion/Discovery.svg?label=Stars&tyle=flat&logo=GitHub)](https://github.com/Nepxion/Discovery/stargazers)  [![Stars](https://gitee.com/Nepxion/Discovery/badge/star.svg)](https://gitee.com/nepxion/Discovery/stargazers)
+[![Total lines](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines)](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines)  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?label=license)](https://github.com/Nepxion/Discovery/blob/master/LICENSE)  [![Maven Central](https://img.shields.io/maven-central/v/com.nepxion/discovery.svg?label=maven%20central)](https://search.maven.org/artifact/com.nepxion/discovery)  [![Javadocs](http://www.javadoc.io/badge/com.nepxion/discovery-plugin-framework.svg)](http://www.javadoc.io/doc/com.nepxion/discovery-plugin-framework)  [![Build Status](https://travis-ci.org/Nepxion/Discovery.svg?branch=master)](https://travis-ci.org/Nepxion/Discovery)  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8e39a24e1be740c58b83fb81763ba317)](https://www.codacy.com/project/HaojunRen/Discovery/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Nepxion/Discovery&amp;utm_campaign=Badge_Grade_Dashboard)  [![Stars](https://img.shields.io/github/stars/Nepxion/Discovery.svg?label=Stars&tyle=flat&logo=GitHub)](https://github.com/Nepxion/Discovery/stargazers)  [![Stars](https://gitee.com/Nepxion/Discovery/badge/star.svg)](https://gitee.com/nepxion/Discovery/stargazers)
 
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.3.3.RELEASE-blue?logo=Spring)](https://search.maven.org/artifact/org.springframework.boot/spring-boot)  [![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-Hoxton.SR8-blue?logo=Spring)](https://search.maven.org/search?q=g:org.springframework.cloud%20AND%20a:spring-cloud-dependencies&core=gav)  [![Spring Cloud Alibaba](https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2.2.2.RELEASE-blue?logo=Spring)](https://search.maven.org/search?q=g:com.alibaba.cloud%20AND%20a:spring-cloud-alibaba-dependencies&core=gav)
+[![Spring Boot](https://img.shields.io/maven-central/v/org.springframework.boot/spring-boot-dependencies.svg?label=Spring%20Boot&logo=Spring)](https://search.maven.org/artifact/org.springframework.boot/spring-boot-dependencies)  [![Spring Cloud](https://img.shields.io/maven-central/v/org.springframework.cloud/spring-cloud-dependencies.svg?label=Spring%20Cloud&logo=Spring)](https://search.maven.org/artifact/org.springframework.cloud/spring-cloud-dependencies)  [![Spring Cloud Alibaba](https://img.shields.io/maven-central/v/com.alibaba.cloud/spring-cloud-alibaba-dependencies.svg?label=Spring%20Cloud%20Alibaba&logo=Spring)](https://search.maven.org/artifact/com.alibaba.cloud/spring-cloud-alibaba-dependencies)  [![Nepxion Discovery](https://img.shields.io/maven-central/v/com.nepxion/discovery.svg?label=Nepxion%20Discovery&logo=Anaconda)](https://search.maven.org/artifact/com.nepxion/discovery)
 
 [![Discovery DOC PPT](https://img.shields.io/badge/Discovery%20Doc-PPT-brightgreen?logo=Microsoft%20PowerPoint)](http://nepxion.gitee.io/docs/link-doc/discovery-ppt.html)  [![Discovery DOC PDF](https://img.shields.io/badge/Discovery%20Doc-PDF-brightgreen?logo=Adobe%20Acrobat%20Reader)](http://nepxion.gitee.io/docs/link-doc/discovery-pdf.html)  [![Discovery DOC HTML](https://img.shields.io/badge/Discovery%20Doc-HTML-brightgreen?logo=Microsoft%20Edge)](http://nepxion.gitee.io/docs/link-doc/discovery-html.html)
 
@@ -141,7 +141,7 @@ Discovery【探索】微服务框架，基于Spring Cloud Discovery服务注册�
     - 基于Git插件自动创建灰度版本号
 - 元数据Metadata运维平台策略
 - 同城双活多机房切换。基于区域匹配发布或者路由的同城双活多机房切换
-- 数据库灰度发布。基于多数据源的数据库灰度发布，内置简单的数据库灰度发布策略
+- 数据库和消息队列灰度发布。基于多Datasource的数据库灰度发布，基于多Queue的消息队列灰度发布
 - 灰度路由和发布的自动化测试。主要包括
     - 基于Spring Boot/Spring Cloud自动化测试，包括普通调用测试、灰度调用测试和扩展调用测试
     - 基于WRK的性能压力测试
@@ -153,15 +153,38 @@ Discovery【探索】微服务框架，基于Spring Cloud Discovery服务注册�
 - [**Spring Cloud Alibaba**] 阿里巴巴中间件部门开发的Spring Cloud增强套件，致力于提供微服务开发的一站式解决方案。此项目包含开发分布式应用微服务的必需组件，方便开发者通过Spring Cloud编程模型轻松使用这些组件来开发分布式应用服务。依托Spring Cloud Alibaba，只需要添加一些注解和少量配置，就可以将Spring Cloud应用接入阿里微服务解决方案，通过阿里中间件来迅速搭建分布式应用系统
 - [**OpenTracing**] OpenTracing已进入CNCF，正在为全球的分布式追踪系统提供统一的概念、规范、架构和数据标准。它通过提供平台无关、厂商无关的API，使得开发人员能够方便的添加（或更换）追踪系统的实现。对于存在多样化的技术栈共存的调用链中，OpenTracing适配Java、C、Go和.Net等技术栈，实现全链路分布式追踪功能。迄今为止，Uber Jaeger、Twitter Zipkin和Apache Skywalking已经适配了OpenTracing规范。CNCF技术委员会通过OpenTelemetry规范整合基于Tracing的OpenTracing规范（官方推荐Jaeger做Backend）和基于Metrics的OpenSensus规范（官方推荐Prometheus做Backend）
 
-④ 框架支持易用性表现，简单步骤如下
+④ 微服务框架易用性表现，如下
 - 引入相关依赖到pom.xml
-- 设置元数据MetaData。如下四个元数据可以按需设置
-    - 定义所属组名（group）或者应用名（application），也可以通过服务名前缀来自动产生服务组名
+- 设置元数据MetaData。如下五个元数据可以按需设置
+    - 定义所属组名（group），也可以通过服务名前缀来自动产生服务组名
     - 定义版本号（version），也可以通过Git插件方式自动产生版本号
     - 定义所属区域名（region）
     - 定义所属环境（env）
+    - 定义所属可用区（zone）	
 - 执行采用“约定大于配置”的准则，使用者也可以开启和关闭相关功能项或者属性值，达到最佳配置
-- 规则策略文件设置和推送
+- 规则策略文件设置和推送，或者通过Header方式传递
+
+⑤ 微服务框架版本兼容列表，如下
+
+![](http://nepxion.gitee.io/docs/icon-doc/tip.png) 提醒：版本号右边， `↑` 表示>=该版本号， `↓` 表示<=该版本号
+
+| 框架版本 | 框架分支 | 框架状态 | Spring Cloud版本 | Spring Boot版本 | Spring Cloud Alibaba版本 |
+| --- | --- | --- | --- | --- | --- |
+| 6.1.0 | master | ![](http://nepxion.gitee.io/docs/icon-doc/confirm_24.png) | Hoxton.SR5 `↑`<br>Hoxton<br>Greenwich<br>Finchley | 2.3.x.RELEASE<br>2.2.x.RELEASE<br>2.1.x.RELEASE<br>2.0.x.RELEASE | 2.2.x.RELEASE<br>2.2.x.RELEASE<br>2.1.x.RELEASE<br>2.0.x.RELEASE |
+| ~~5.6.0~~ | ~~5.x.x~~ | ![](http://nepxion.gitee.io/docs/icon-doc/delete_24.png) | Greenwich | 2.1.x.RELEASE | 2.1.x.RELEASE |
+| ~~4.15.0~~ | ~~4.x.x~~ | ![](http://nepxion.gitee.io/docs/icon-doc/delete_24.png) | Finchley | 2.0.x.RELEASE | 2.0.x.RELEASE |
+| 3.18.0 | 3.x.x | ![](http://nepxion.gitee.io/docs/icon-doc/arrow_up_24.png) | Edgware | 1.5.x.RELEASE | 1.5.x.RELEASE |
+| ~~2.0.x~~ | ~~2.x.x~~ | ![](http://nepxion.gitee.io/docs/icon-doc/delete_24.png) | Dalston | 1.x.x.RELEASE | N/A |
+| ~~1.0.x~~ | ~~1.x.x~~ | ![](http://nepxion.gitee.io/docs/icon-doc/delete_24.png) | Camden | 1.x.x.RELEASE | N/A |
+
+![](http://nepxion.gitee.io/docs/icon-doc/confirm_24.png) 表示维护中 | ![](http://nepxion.gitee.io/docs/icon-doc/arrow_up_24.png) 表示不维护，但可用，强烈建议升级 | ![](http://nepxion.gitee.io/docs/icon-doc/delete_24.png) 表示不维护，不可用，已废弃
+
+- 6.x.x版本（同时适用于Finchley、Greenwich和Hoxton以及未来的更高版本），将继续维护
+- 5.x.x版本（适用于Greenwich）已废弃
+- 4.x.x版本（适用于Finchley）已废弃
+- 3.x.x版本（适用于Edgware）不维护，但可用，强烈建议升级
+- 2.x.x版本（适用于Dalston）已废弃
+- 1.x.x版本（适用于Camden）已废弃
 
 ## 鸣谢
 ![](http://nepxion.gitee.io/docs/icon-doc/information.png) 鸣谢
@@ -174,7 +197,7 @@ Discovery【探索】微服务框架，基于Spring Cloud Discovery服务注册�
 
 <img src="http://nepxion.gitee.io/docs/discovery-doc/AwardNacos1.jpg" alt="Nacos" width="50%"><img src="http://nepxion.gitee.io/docs/discovery-doc/AwardSCA1.jpg" alt="Spring Cloud Alibaba" width="50%">
 
-- 感谢使用本框架的公司和企业。不完全统计，目前社区开源项目已经被如下公司使用或者调研
+- 感谢支持和使用本框架的公司和企业。不完全统计，目前社区开源项目已经被如下公司使用或者调研
 
 <table>
   <tbody>
@@ -267,11 +290,12 @@ Discovery【探索】微服务框架，基于Spring Cloud Discovery服务注册�
 
 为提供更好的专业级服务，请更多已经使用本框架的公司和企业联系我，也可以在Github Issues上登记
 
+![](http://nepxion.gitee.io/docs/icon-doc/chart_bar_32.png) 某大型互联网教育公司在生产环境全套接入Nepxion Discovery框架的服务实例数截至到2020年10月已达到1000个
+
 ## 目录
 - [简介](#简介)
 - [鸣谢](#鸣谢)
 - [请联系我](#请联系我)
-- [相关版本](#相关版本)
 - [相关链接](#相关链接)
     - [源码主页](#源码主页)
     - [指南主页](#指南主页)
@@ -317,7 +341,7 @@ Discovery【探索】微服务框架，基于Spring Cloud Discovery服务注册�
         - [全局区域权重灰度规则](#全局区域权重灰度规则)
         - [局部区域权重灰度规则](#局部区域权重灰度规则)
     - [配置全链路灰度权重和灰度匹配组合式规则](#配置全链路灰度权重和灰度匹配组合式规则)
-    - [数据库灰度发布规则](#数据库灰度发布规则)
+    - [数据库和消息队列灰度发布规则](#数据库和消息队列灰度发布规则)
 - [基于多格式的规则策略定义](#基于多格式的规则策略定义)
     - [规则策略格式定义](#规则策略格式定义)
     - [规则策略内容定义](#规则策略内容定义)
@@ -410,26 +434,6 @@ Discovery【探索】微服务框架，基于Spring Cloud Discovery服务注册�
 微信、公众号和文档
 
 ![](http://nepxion.gitee.io/docs/zxing-doc/微信-1.jpg)![](http://nepxion.gitee.io/docs/zxing-doc/公众号-1.jpg)![](http://nepxion.gitee.io/docs/zxing-doc/文档-1.jpg)
-
-## 相关版本
-| 框架版本 | 框架分支 | 框架状态 | Spring Cloud版本 | Spring Boot版本 | Spring Cloud Alibaba版本 |
-| --- | --- | --- | --- | --- | --- |
-| 6.0.7 | master | ![](http://nepxion.gitee.io/docs/icon-doc/confirm_24.png) | Hoxton<br><br>Greenwich<br>Finchley | 2.3.x.RELEASE<br>2.2.x.RELEASE<br>2.1.x.RELEASE<br>2.0.x.RELEASE | 2.2.x.RELEASE<br><br>2.1.x.RELEASE<br>2.0.x.RELEASE |
-| ~~5.6.0~~ | ~~5.x.x~~ | ![](http://nepxion.gitee.io/docs/icon-doc/delete_24.png) | Greenwich | 2.1.x.RELEASE | 2.1.x.RELEASE |
-| ~~4.15.0~~ | ~~4.x.x~~ | ![](http://nepxion.gitee.io/docs/icon-doc/delete_24.png) | Finchley | 2.0.x.RELEASE | 2.0.x.RELEASE |
-| 3.16.7 | 3.x.x | ![](http://nepxion.gitee.io/docs/icon-doc/arrow_up_24.png) | Edgware | 1.5.x.RELEASE | 1.5.x.RELEASE |
-| ~~2.0.x~~ | ~~2.x.x~~ | ![](http://nepxion.gitee.io/docs/icon-doc/delete_24.png) | Dalston | 1.x.x.RELEASE | 1.5.x.RELEASE |
-| ~~1.0.x~~ | ~~1.x.x~~ | ![](http://nepxion.gitee.io/docs/icon-doc/delete_24.png) | Camden | 1.x.x.RELEASE | 1.5.x.RELEASE |
-
-![](http://nepxion.gitee.io/docs/icon-doc/confirm_24.png) 表示维护中 | ![](http://nepxion.gitee.io/docs/icon-doc/arrow_up_24.png) 表示不维护，但可用，强烈建议升级 | ![](http://nepxion.gitee.io/docs/icon-doc/delete_24.png) 表示不维护，不可用，已废弃
-
-![](http://nepxion.gitee.io/docs/icon-doc/warning.png) 注意：Hoxton SR5或者以上的版本才支持Spring Boot 2.3.x.RELEASE版本
-- 6.x.x版本（同时适用于Finchley、Greenwich和Hoxton以及未来的更高版本），将继续维护
-- 5.x.x版本（适用于Greenwich）已废弃
-- 4.x.x版本（适用于Finchley）已废弃
-- 3.x.x版本（适用于Edgware）不维护，但可用，强烈建议升级
-- 2.x.x版本（适用于Dalston）已废弃
-- 1.x.x版本（适用于Camden）已废弃
 
 ## 相关链接
 
@@ -1782,21 +1786,51 @@ spring.application.strategy.rest.template.core.header.transmission.enabled=true
 ```
 ![](http://nepxion.gitee.io/docs/discovery-doc/DiscoveryGuide5-1.jpg)
 
-### 数据库灰度发布规则
-通过订阅业务参数的变化，实现参数化灰度发布，例如，多数据源的数据库切换的灰度发布
+### 数据库和消息队列灰度发布规则
+通过订阅业务参数的变化，实现参数化灰度发布，例如，基于多Datasource的数据库灰度发布，基于多Queue的消息队列灰度发布
 
 增加参数化灰度规则，Group为discovery-guide-group，Data Id为discovery-guide-group（全局发布，两者都是组名），规则内容如下，实现功能
-- a服务指向测试数据库（database的value为qa）
-- b服务指向生产数据库（database的value为prod）
-- a服务上线后，执行数据库灰度发布，改对应value为prod，结合ShardingSphere等多数据源中间件，实现实时无缝切换，即可实现数据库灰度发布
+- 服务a在版本为1.0的时候，数据库的数据源指向db1；服务a在版本为1.1的时候，数据库的数据源指向db2
+- 服务b在区域为dev的时候，消息队列指向queue1；服务b在区域为dev的时候，消息队列指向queue2
+- 服务c在环境为env1的时候，数据库的数据源指向db1；服务c在环境为env2的时候，数据库的数据源指向db2
+- 服务d在可用区为zone1的时候，消息队列指向queue1；服务d在可用区为zone2的时候，消息队列指向queue2
+- 服务c在IP地址和端口为192.168.43.101:1201的时候，数据库的数据源指向db1；服务c在IP地址和端口为192.168.43.102:1201的时候，数据库的数据源指向db2
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <rule>
     <parameter>
-        <service service-name="discovery-guide-service-a" key="database" value="qa"/>
-        <service service-name="discovery-guide-service-b" key="database" value="prod"/>
+        <service service-name="discovery-guide-service-a" tag-type="version" tag-value="1.0" key="database" value="db1"/>
+        <service service-name="discovery-guide-service-a" tag-type="version" tag-value="1.1" key="database" value="db2"/>
+        <service service-name="discovery-guide-service-b" tag-type="region" tag-value="dev" key="mq" value="queue1"/>
+        <service service-name="discovery-guide-service-b" tag-type="region" tag-value="qa" key="mq" value="queue2"/>
+        <service service-name="discovery-guide-service-c" tag-type="env" tag-value="env1" key="database" value="db1"/>
+        <service service-name="discovery-guide-service-c" tag-type="env" tag-value="env1" key="database" value="db2"/>
+        <service service-name="discovery-guide-service-d" tag-type="zone" tag-value="zone1" key="mq" value="queue1"/>
+        <service service-name="discovery-guide-service-d" tag-type="zone" tag-value="zone2" key="mq" value="queue2"/>
+        <service service-name="discovery-guide-service-e" tag-type="address" tag-value="192.168.43.101:1201" key="database" value="db1"/>
+        <service service-name="discovery-guide-service-e" tag-type="address" tag-value="192.168.43.102:1201" key="database" value="db2"/>
     </parameter>
 </rule>
+```
+通过事件总线方式，对参数改变动态实现监听，并在此类里自行对接相关的数据库和消息队列中间件的切换和驱动
+```java
+@EventBus
+public class MySubscriber {
+    @Autowired
+    private PluginAdapter pluginAdapter;
+
+    @Subscribe
+    public void onParameterChanged(ParameterChangedEvent parameterChangedEvent) {
+        ParameterEntity parameterEntity = parameterChangedEvent.getParameterEntity();
+        String serviceId = pluginAdapter.getServiceId();
+        List<ParameterServiceEntity> parameterServiceEntityList = null;
+        if (parameterEntity != null) {
+            Map<String, List<ParameterServiceEntity>> parameterServiceMap = parameterEntity.getParameterServiceMap();
+            parameterServiceEntityList = parameterServiceMap.get(serviceId);
+        }
+        System.out.println("========== 获取动态参数, serviceId=" + serviceId + ", parameterServiceEntityList=" + parameterServiceEntityList);
+    }
+}
 ```
 
 ## 基于多格式的规则策略定义
@@ -2042,12 +2076,23 @@ XML最全的示例如下，Json示例见源码discovery-springcloud-example-serv
         <address value="1301"/> -->
     </strategy-blacklist>
 
-    <!-- 参数控制，由远程推送参数的改变，实现一些特色化的灰度发布，例如，基于数据库的灰度发布 -->
+    <!-- 参数控制，由远程推送参数的改变，实现一些特色化的灰度发布，例如，基于数据库和消息队列的灰度发布 -->
     <parameter>
-        <!-- 服务a和c分别有两个库的配置，分别是测试数据库（database的value为qa）和生产数据库（database的value为prod） -->
-        <!-- 上线后，一开始数据库指向测试数据库，对应value为qa，然后灰度发布的时候，改对应value为prod，即实现数据库的灰度发布 -->
-        <service service-name="discovery-springcloud-example-a" key="database" value="qa"/>
-        <service service-name="discovery-springcloud-example-c" key="database" value="prod"/>
+        <!-- 服务a在版本为1.0的时候，数据库的数据源指向db1；服务a在版本为1.1的时候，数据库的数据源指向db2 -->
+        <!-- 服务b在区域为dev的时候，消息队列指向queue1；服务b在区域为dev的时候，消息队列指向queue2 -->
+        <!-- 服务c在环境为env1的时候，数据库的数据源指向db1；服务c在环境为env2的时候，数据库的数据源指向db2 -->
+        <!-- 服务d在可用区为zone1的时候，消息队列指向queue1；服务d在可用区为zone2的时候，消息队列指向queue2 -->
+        <!-- 服务c在IP地址和端口为192.168.43.101:1201的时候，数据库的数据源指向db1；服务c在IP地址和端口为192.168.43.102:1201的时候，数据库的数据源指向db2 -->
+        <service service-name="discovery-springcloud-example-a" tag-type="version" tag-value="1.0" key="database" value="db1"/>
+        <service service-name="discovery-springcloud-example-a" tag-type="version" tag-value="1.1" key="database" value="db2"/>
+        <service service-name="discovery-springcloud-example-b" tag-type="region" tag-value="dev" key="mq" value="queue1"/>
+        <service service-name="discovery-springcloud-example-b" tag-type="region" tag-value="qa" key="mq" value="queue2"/>
+        <service service-name="discovery-springcloud-example-c" tag-type="env" tag-value="env1" key="database" value="db1"/>
+        <service service-name="discovery-springcloud-example-c" tag-type="env" tag-value="env1" key="database" value="db2"/>
+        <service service-name="discovery-springcloud-example-d" tag-type="zone" tag-value="zone1" key="mq" value="queue1"/>
+        <service service-name="discovery-springcloud-example-d" tag-type="zone" tag-value="zone2" key="mq" value="queue2"/>
+        <service service-name="discovery-springcloud-example-e" tag-type="address" tag-value="192.168.43.101:1201" key="database" value="db1"/>
+        <service service-name="discovery-springcloud-example-e" tag-type="address" tag-value="192.168.43.102:1201" key="database" value="db2"/>
     </parameter>
 </rule>
 ```
@@ -3610,7 +3655,7 @@ spring.application.test.scan.packages=com.nepxion.discovery.guide.test
 # 测试用例的配置内容推送时，是否打印配置日志。缺失则默认为true
 spring.application.test.config.print.enabled=true
 # 测试用例的配置内容推送后，等待生效的时间。推送远程配置中心后，再通知各服务更新自身的配置缓存，需要一定的时间，缺失则默认为3000
-spring.application.test.config.operation.await.time=8000
+spring.application.test.config.operation.await.time=5000
 # 测试用例的配置内容推送的控制台地址。控制台是连接服务注册发现中心、远程配置中心和服务的纽带
 spring.application.test.console.url=http://localhost:6001/
 
@@ -3829,32 +3874,43 @@ public class DiscoveryGuideTestCases {
 ```
 
 #### 扩展调用测试
-除了支持灰度自动化测试外，使用者可扩展出以远程配置中心内容做变更的自动化测试。以阿里巴巴的Sentinel为例子，测试实现方式如下
+除了支持灰度自动化测试外，使用者可扩展出以远程配置中心内容做变更的自动化测试。以阿里巴巴的Sentinel的权限功能为例子，参考PolarisGuide，测试实现方式如下
 
 ① 远程配置中心约定
 
 - Nacos的Key格式
 ```
-Group为代码中的{group}，Data ID为{serviceId}-{suffix}，即{serviceId}-sentinel
+Group为DEFAULT_GROUP，Data ID为sentinel-authority-${spring.application.name}。每个服务都专享自己的Sentinel规则
 ```
 - Apollo的Key格式
 ```
-{group}-{serviceId}-sentinel
+namespace为application，Key为sentinel-authority。每个服务都专享自己的Sentinel规则
 ```
-② 执行测试用例前，把执行限流降级熔断等逻辑的内容（executePath = "sentinel-test.xml"）推送到远程配置中心
+② 执行测试用例前，把执行限流降级熔断等逻辑的内容（executePath = "sentinel-authority-2.json"）推送到远程配置中心
 
 ③ 执行测试用例，通过断言Assert来判断测试结果
 
-④ 执行测试用例后，把修改过的内容（resetPath = "sentinel-default.xml"）复原，再推送一次到远程配置中心
+④ 执行测试用例后，把修改过的内容（resetPath = "sentinel-authority-1.json"）复原，再推送一次到远程配置中心
 
 ```java
-public class DiscoveryGuideTestCases {
+public class PolarisTestCases {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
-    @DTestConfig(group = "#group", serviceId = "#serviceId", suffix = "sentinel" executePath = "sentinel-test.xml", resetPath = "sentinel-default.xml")
-    public void testSentinel(String group, String serviceId, String testUrl) {
-        ...
+    @DTestConfig(group = "DEFAULT_GROUP", serviceId = "sentinel-authority-polaris-service-b", executePath = "sentinel-authority-2.json", resetPath = "sentinel-authority-1.json")
+    public void testSentinelAuthority1(String testUrl) {
+        int count = 0;
+        for (int i = 0; i < 4; i++) {
+            String result = testRestTemplate.postForEntity(testUrl, "gateway", String.class).getBody();
+
+            LOG.info("Result{} : {}", i + 1, result);
+
+            if (result.contains("AuthorityRule")) {
+                count++;
+            }
+        }
+
+        Assert.assertEquals(count, 4);
     }
 }
 ```
