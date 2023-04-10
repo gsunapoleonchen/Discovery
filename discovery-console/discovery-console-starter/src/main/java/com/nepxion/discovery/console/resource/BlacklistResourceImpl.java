@@ -24,78 +24,85 @@ import com.nepxion.discovery.common.entity.RuleEntity;
 import com.nepxion.discovery.common.entity.StrategyBlacklistEntity;
 import com.nepxion.discovery.common.exception.DiscoveryException;
 import com.nepxion.discovery.common.util.StringUtil;
+import com.nepxion.discovery.console.delegate.ConsoleResourceDelegateImpl;
 
-public class BlacklistResourceImpl implements BlacklistResource {
+public class BlacklistResourceImpl extends ConsoleResourceDelegateImpl implements BlacklistResource {
     @Autowired
     private ServiceResource serviceResource;
 
-    @Autowired
-    private ConfigResource configResource;
-
     @Override
-    public String addBlacklist(String group, String serviceId, String host, int port) {
-        return addBlacklist(group, null, serviceId, host, port);
+    public String addBlacklist(String group, String targetServiceId, String targetHost, int targetPort) {
+        return addBlacklist(group, null, targetServiceId, targetHost, targetPort);
     }
 
     @Override
-    public boolean deleteBlacklist(String group, String serviceId, String serviceUUId) {
-        return deleteBlacklist(group, null, serviceId, serviceUUId);
+    public String addBlacklist(String group, String targetServiceId, String targetServiceUUId) {
+        return addBlacklist(group, null, targetServiceId, targetServiceUUId);
     }
 
     @Override
-    public String addBlacklist(String group, String gatewayId, String serviceId, String host, int port) {
-        InstanceEntity instanceEntity = getInstanceEntity(serviceId, host, port);
+    public boolean deleteBlacklist(String group, String targetServiceId, String targetServiceUUId) {
+        return deleteBlacklist(group, null, targetServiceId, targetServiceUUId);
+    }
+
+    @Override
+    public boolean clearBlacklist(String group) {
+        return clearBlacklist(group, null);
+    }
+
+    @Override
+    public String addBlacklist(String group, String serviceId, String targetServiceId, String targetHost, int targetPort) {
+        InstanceEntity instanceEntity = getInstanceEntity(targetServiceId, targetHost, targetPort);
         if (instanceEntity == null) {
-            throw new DiscoveryException("Not found the instance with serviceId=" + serviceId + " host=" + host + ", port=" + port);
+            throw new DiscoveryException("Not found the instance with serviceId=" + targetServiceId + " host=" + targetHost + ", port=" + targetPort);
         }
 
-        String serviceUUId = instanceEntity.getServiceUUId();
-        if (StringUtils.isEmpty(serviceUUId)) {
-            throw new DiscoveryException("Not found UUID in the instance with serviceId=" + serviceId + " host=" + host + ", port=" + port);
+        String targetServiceUUId = instanceEntity.getServiceUUId();
+        if (StringUtils.isEmpty(targetServiceUUId)) {
+            throw new DiscoveryException("Not found UUID in the instance with serviceId=" + targetServiceId + " host=" + targetHost + ", port=" + targetPort);
         }
 
-        RuleEntity ruleEntity = null;
-        try {
-            ruleEntity = configResource.getRemoteRuleEntity(group, getSubscriptionServiceId(group, gatewayId));
-        } catch (Exception e) {
-            throw new DiscoveryException("Get remote RuleEntity failed, group=" + group + ", serviceId=" + getSubscriptionServiceId(group, gatewayId), e);
-        }
-
-        addBlacklistId(ruleEntity, serviceId, serviceUUId);
-
-        try {
-            configResource.updateRemoteRuleEntity(group, getSubscriptionServiceId(group, gatewayId), ruleEntity);
-        } catch (Exception e) {
-            throw new DiscoveryException("Update remote RuleEntity failed, group=" + group + ", serviceId=" + getSubscriptionServiceId(group, gatewayId), e);
-        }
-
-        return serviceUUId;
+        return addBlacklist(group, serviceId, targetServiceId, targetServiceUUId);
     }
 
     @Override
-    public boolean deleteBlacklist(String group, String gatewayId, String serviceId, String serviceUUId) {
-        RuleEntity ruleEntity = null;
-        try {
-            ruleEntity = configResource.getRemoteRuleEntity(group, getSubscriptionServiceId(group, gatewayId));
-        } catch (Exception e) {
-            throw new DiscoveryException("Get remote RuleEntity failed, group=" + group + ", serviceId=" + getSubscriptionServiceId(group, gatewayId), e);
-        }
+    public String addBlacklist(String group, String serviceId, String targetServiceId, String targetServiceUUId) {
+        RuleEntity ruleEntity = getRemoteRuleEntity(group, serviceId);
 
-        deleteBlacklistId(ruleEntity, serviceId, serviceUUId);
+        addBlacklistId(ruleEntity, targetServiceId, targetServiceUUId);
 
-        try {
-            return configResource.updateRemoteRuleEntity(group, getSubscriptionServiceId(group, gatewayId), ruleEntity);
-        } catch (Exception e) {
-            throw new DiscoveryException("Update remote RuleEntity failed, group=" + group + ", serviceId=" + getSubscriptionServiceId(group, gatewayId), e);
-        }
+        updateRemoteRuleEntity(group, serviceId, ruleEntity);
+
+        return targetServiceUUId;
     }
 
-    public void addBlacklistId(RuleEntity ruleEntity, String serviceId, String serviceUUId) {
+    @Override
+    public boolean deleteBlacklist(String group, String serviceId, String targetServiceId, String targetServiceUUId) {
+        RuleEntity ruleEntity = getRemoteRuleEntity(group, serviceId);
+
+        deleteBlacklistId(ruleEntity, targetServiceId, targetServiceUUId);
+
+        return updateRemoteRuleEntity(group, serviceId, ruleEntity);
+    }
+
+    @Override
+    public boolean clearBlacklist(String group, String serviceId) {
+        RuleEntity ruleEntity = getRemoteRuleEntity(group, serviceId);
+
+        clearBlacklistId(ruleEntity);
+
+        return updateRemoteRuleEntity(group, serviceId, ruleEntity);
+    }
+
+    private void addBlacklistId(RuleEntity ruleEntity, String serviceId, String serviceUUId) {
         StrategyBlacklistEntity strategyBlacklistEntity = ruleEntity.getStrategyBlacklistEntity();
         if (strategyBlacklistEntity != null) {
             String idValue = strategyBlacklistEntity.getIdValue();
             if (StringUtils.isNotEmpty(idValue)) {
                 String addIdValue = addBlacklistId(idValue, serviceId, serviceUUId);
+                strategyBlacklistEntity.setIdValue(addIdValue);
+            } else {
+                String addIdValue = addBlacklistId((String) null, serviceId, serviceUUId);
                 strategyBlacklistEntity.setIdValue(addIdValue);
             }
         } else {
@@ -146,7 +153,11 @@ public class BlacklistResourceImpl implements BlacklistResource {
             if (StringUtils.isNotEmpty(idValue)) {
                 String deletedIdValue = deleteBlacklistId(idValue, serviceId, serviceUUId);
                 strategyBlacklistEntity.setIdValue(deletedIdValue);
+            } else {
+                throw new DiscoveryException("Not found UUId=" + serviceUUId + " with serviceId=" + serviceId + " in blacklist");
             }
+        } else {
+            throw new DiscoveryException("Not found UUId=" + serviceUUId + " with serviceId=" + serviceId + " in blacklist");
         }
     }
 
@@ -157,7 +168,7 @@ public class BlacklistResourceImpl implements BlacklistResource {
         if (MapUtils.isNotEmpty(idMap)) {
             List<String> idList = idMap.get(serviceId);
             if (CollectionUtils.isEmpty(idList)) {
-                throw new DiscoveryException("Not found UUID in the instance with serviceId=" + serviceId);
+                throw new DiscoveryException("Not found UUId=" + serviceUUId + " with serviceId=" + serviceId + " in blacklist");
             }
 
             if (idList.contains(serviceUUId)) {
@@ -171,13 +182,27 @@ public class BlacklistResourceImpl implements BlacklistResource {
                     idMap.put(serviceId, newIdList);
                 }
             } else {
-                throw new DiscoveryException("Not found UUID=" + serviceUUId + " with serviceId=" + serviceId + " in blacklist");
+                throw new DiscoveryException("Not found UUId=" + serviceUUId + " with serviceId=" + serviceId + " in blacklist");
             }
 
             return StringUtil.convertToComplexString(idMap);
         }
 
         return null;
+    }
+
+    private void clearBlacklistId(RuleEntity ruleEntity) {
+        StrategyBlacklistEntity strategyBlacklistEntity = ruleEntity.getStrategyBlacklistEntity();
+        if (strategyBlacklistEntity != null) {
+            String idValue = strategyBlacklistEntity.getIdValue();
+            if (StringUtils.isNotEmpty(idValue)) {
+                strategyBlacklistEntity.setIdValue(null);
+            } else {
+                throw new DiscoveryException("No UUId blacklist found");
+            }
+        } else {
+            throw new DiscoveryException("No UUId blacklist found");
+        }
     }
 
     private InstanceEntity getInstanceEntity(String serviceId, String host, int port) {
@@ -189,9 +214,5 @@ public class BlacklistResourceImpl implements BlacklistResource {
         }
 
         return null;
-    }
-
-    private String getSubscriptionServiceId(String group, String serviceId) {
-        return StringUtils.isEmpty(serviceId) ? group : serviceId;
     }
 }

@@ -10,7 +10,7 @@ package com.nepxion.discovery.common.constant;
  */
 
 public class DiscoveryConstant {
-    public static final String DISCOVERY_VERSION = "6.16.2-SNAPSHOT";
+    public static final String DISCOVERY_VERSION = "6.21.0";
 
     public static final String NEPXION = "nepxion";
     public static final String NEPXION_UPPERCASE = "NEPXION";
@@ -20,9 +20,6 @@ public class DiscoveryConstant {
     public static final String SPRING_APPLICATION_DISCOVERY_PLUGIN = "spring.application.discovery.plugin";
     public static final String SPRING_APPLICATION_DISCOVERY_VERSION = "spring.application.discovery.version";
     public static final String SPRING_APPLICATION_DISCOVERY_AGENT_VERSION = "spring.application.discovery.agent.version";
-    public static final String SPRING_APPLICATION_REGISTER_CONTROL_ENABLED = "spring.application.register.control.enabled";
-    public static final String SPRING_APPLICATION_DISCOVERY_CONTROL_ENABLED = "spring.application.discovery.control.enabled";
-    public static final String SPRING_APPLICATION_CONFIG_REST_CONTROL_ENABLED = "spring.application.config.rest.control.enabled";
     public static final String SPRING_APPLICATION_WEIGHT_RANDOM_TYPE = "spring.application.weight.random.type";
     public static final String SPRING_APPLICATION_CONFIG_FORMAT = "spring.application.config.format";
     public static final String SPRING_APPLICATION_CONFIG_PATH = "spring.application.config.path";
@@ -30,9 +27,6 @@ public class DiscoveryConstant {
     public static final String SPRING_APPLICATION_CONTEXT_PATH = "spring.application.context-path";
     public static final String SPRING_APPLICATION_DEFAULT_PROPERTIES_PATH = "spring.application.default.properties.path";
     public static final String SPRING_APPLICATION_DEFAULT_PROPERTIES_PATH_VALUE = "spring-application-default";
-    public static final String SPRING_APPLICATION_NO_SERVERS_RETRY_ENABLED = "spring.application.no.servers.retry.enabled";
-    public static final String SPRING_APPLICATION_NO_SERVERS_RETRY_TIMES = "spring.application.no.servers.retry.times";
-    public static final String SPRING_APPLICATION_NO_SERVERS_RETRY_AWAIT_TIME = "spring.application.no.servers.retry.await.time";
     public static final String SPRING_APPLICATION_NO_SERVERS_NOTIFY_ENABLED = "spring.application.no.servers.notify.enabled";
     public static final String SPRING_APPLICATION_PARAMETER_EVENT_ONSTART_ENABLED = "spring.application.parameter.event.onstart.enabled";
 
@@ -148,6 +142,9 @@ public class DiscoveryConstant {
     public static final String DOMAIN_GATEWAY = "domain-gateway";
     public static final String NON_DOMAIN_GATEWAY = "non-domain-gateway";
 
+    public static final String SORT_BY_VERSION = "version";
+    public static final String SORT_BY_TIME = "time";
+
     public static final String BLACKLIST = "blacklist";
     public static final String WHITELIST = "whitelist";
 
@@ -204,6 +201,9 @@ public class DiscoveryConstant {
     public static final String EXPRESSION_REGEX = "\\#" + EXPRESSION_PREFIX + "\\['\\S+'\\]";
     public static final String EXPRESSION_SUB_PREFIX = "#" + EXPRESSION_PREFIX + "['";
     public static final String EXPRESSION_SUB_SUFFIX = "']";
+
+    public static final String EXPRESSION_SINGLE_QUOTES_REGEX = "[^\\S\"']+|\"[^\"]*\"|'[^']*'";
+    public static final String EXPRESSION_SINGLE_QUOTES = "'";
 
     public static final String EMPTY_XML_RULE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rule>\n</rule>";
     public static final String EMPTY_JSON_RULE_SINGLE = "{}";

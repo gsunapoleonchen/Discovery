@@ -42,9 +42,6 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
     @Autowired
     protected RuleCache ruleCache;
 
-    @Autowired(required = false)
-    protected ApplicationInfoAdapter applicationInfoAdapter;
-
     @Value("${" + DiscoveryConstant.SPRING_APPLICATION_GROUP_KEY + ":" + DiscoveryConstant.GROUP + "}")
     private String groupKey;
 
@@ -52,6 +49,78 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
     private String applicationType;
 
     protected Map<String, String> emptyMetadata = new HashMap<String, String>();
+
+    @Override
+    public RuleEntity getRule() {
+        RuleEntity dynamicRuleEntity = getDynamicRule();
+        if (dynamicRuleEntity != null) {
+            return dynamicRuleEntity;
+        }
+
+        return getLocalRule();
+    }
+
+    @Override
+    public RuleEntity getLocalRule() {
+        return ruleCache.get(DiscoveryConstant.RULE);
+    }
+
+    @Override
+    public void setLocalRule(RuleEntity ruleEntity) {
+        ruleCache.put(DiscoveryConstant.RULE, ruleEntity);
+    }
+
+    @Override
+    public RuleEntity getDynamicRule() {
+        return ruleCache.get(DiscoveryConstant.DYNAMIC_RULE);
+    }
+
+    @Override
+    public RuleEntity getDynamicPartialRule() {
+        return ruleCache.get(DiscoveryConstant.DYNAMIC_PARTIAL_RULE);
+    }
+
+    @Override
+    public void setDynamicPartialRule(RuleEntity ruleEntity) {
+        ruleCache.put(DiscoveryConstant.DYNAMIC_PARTIAL_RULE, ruleEntity);
+
+        assembleDynamicRule();
+    }
+
+    @Override
+    public void clearDynamicPartialRule() {
+        ruleCache.clear(DiscoveryConstant.DYNAMIC_PARTIAL_RULE);
+
+        assembleDynamicRule();
+    }
+
+    @Override
+    public RuleEntity getDynamicGlobalRule() {
+        return ruleCache.get(DiscoveryConstant.DYNAMIC_GLOBAL_RULE);
+    }
+
+    @Override
+    public void setDynamicGlobalRule(RuleEntity ruleEntity) {
+        ruleCache.put(DiscoveryConstant.DYNAMIC_GLOBAL_RULE, ruleEntity);
+
+        assembleDynamicRule();
+    }
+
+    @Override
+    public void clearDynamicGlobalRule() {
+        ruleCache.clear(DiscoveryConstant.DYNAMIC_GLOBAL_RULE);
+
+        assembleDynamicRule();
+    }
+
+    // 从动态全局规则和动态局部规则缓存组装出最终的动态规则
+    private void assembleDynamicRule() {
+        RuleEntity dynamicPartialRule = getDynamicPartialRule();
+        RuleEntity dynamicGlobalRule = getDynamicGlobalRule();
+
+        RuleEntity dynamicRule = RuleEntityWrapper.assemble(dynamicPartialRule, dynamicGlobalRule);
+        ruleCache.put(DiscoveryConstant.DYNAMIC_RULE, dynamicRule);
+    }
 
     @Override
     public String getPlugin() {
@@ -96,31 +165,12 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
 
     @Override
     public String getServiceAppId() {
-        if (applicationInfoAdapter != null) {
-            return applicationInfoAdapter.getAppId();
-        }
-
-        return null;
+        return getMetadata().get(DiscoveryMetaDataConstant.SPRING_APPLICATION_APP_ID);
     }
 
     @Override
     public String getServiceUUId() {
         return getMetadata().get(DiscoveryMetaDataConstant.SPRING_APPLICATION_UUID);
-    }
-
-    @Override
-    public String getHost() {
-        return registration.getHost();
-    }
-
-    @Override
-    public int getPort() {
-        return registration.getPort();
-    }
-
-    @Override
-    public Map<String, String> getMetadata() {
-        return registration.getMetadata();
     }
 
     @Override
@@ -159,78 +209,6 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
     }
 
     @Override
-    public RuleEntity getRule() {
-        RuleEntity dynamicRuleEntity = getDynamicRule();
-        if (dynamicRuleEntity != null) {
-            return dynamicRuleEntity;
-        }
-
-        return getLocalRule();
-    }
-
-    @Override
-    public RuleEntity getLocalRule() {
-        return ruleCache.get(DiscoveryConstant.RULE);
-    }
-
-    @Override
-    public void setLocalRule(RuleEntity ruleEntity) {
-        ruleCache.put(DiscoveryConstant.RULE, ruleEntity);
-    }
-
-    @Override
-    public RuleEntity getDynamicRule() {
-        return ruleCache.get(DiscoveryConstant.DYNAMIC_RULE);
-    }
-
-    // 从动态全局规则和动态局部规则缓存组装出最终的动态规则
-    private void assembleDynamicRule() {
-        RuleEntity dynamicPartialRule = getDynamicPartialRule();
-        RuleEntity dynamicGlobalRule = getDynamicGlobalRule();
-
-        RuleEntity dynamicRule = RuleEntityWrapper.assemble(dynamicPartialRule, dynamicGlobalRule);
-        ruleCache.put(DiscoveryConstant.DYNAMIC_RULE, dynamicRule);
-    }
-
-    @Override
-    public RuleEntity getDynamicPartialRule() {
-        return ruleCache.get(DiscoveryConstant.DYNAMIC_PARTIAL_RULE);
-    }
-
-    @Override
-    public void setDynamicPartialRule(RuleEntity ruleEntity) {
-        ruleCache.put(DiscoveryConstant.DYNAMIC_PARTIAL_RULE, ruleEntity);
-
-        assembleDynamicRule();
-    }
-
-    @Override
-    public void clearDynamicPartialRule() {
-        ruleCache.clear(DiscoveryConstant.DYNAMIC_PARTIAL_RULE);
-
-        assembleDynamicRule();
-    }
-
-    @Override
-    public RuleEntity getDynamicGlobalRule() {
-        return ruleCache.get(DiscoveryConstant.DYNAMIC_GLOBAL_RULE);
-    }
-
-    @Override
-    public void setDynamicGlobalRule(RuleEntity ruleEntity) {
-        ruleCache.put(DiscoveryConstant.DYNAMIC_GLOBAL_RULE, ruleEntity);
-
-        assembleDynamicRule();
-    }
-
-    @Override
-    public void clearDynamicGlobalRule() {
-        ruleCache.clear(DiscoveryConstant.DYNAMIC_GLOBAL_RULE);
-
-        assembleDynamicRule();
-    }
-
-    @Override
     public String getRegion() {
         String region = getMetadata().get(DiscoveryConstant.REGION);
         if (StringUtils.isEmpty(region)) {
@@ -261,6 +239,16 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
     }
 
     @Override
+    public boolean isActive() {
+        String active = getMetadata().get(DiscoveryConstant.ACTIVE);
+        if (StringUtils.isEmpty(active)) {
+            return false;
+        }
+
+        return Boolean.valueOf(active);
+    }
+
+    @Override
     public String getProtocol() {
         String protocol = getMetadata().get(DiscoveryMetaDataConstant.SPRING_APPLICATION_PROTOCOL);
         if (StringUtils.isEmpty(protocol)) {
@@ -288,13 +276,18 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
     }
 
     @Override
-    public boolean isActive() {
-        String active = getMetadata().get(DiscoveryConstant.ACTIVE);
-        if (StringUtils.isEmpty(active)) {
-            return false;
-        }
+    public String getHost() {
+        return registration.getHost();
+    }
 
-        return Boolean.valueOf(active);
+    @Override
+    public int getPort() {
+        return registration.getPort();
+    }
+
+    @Override
+    public Map<String, String> getMetadata() {
+        return registration.getMetadata();
     }
 
     @Override
@@ -350,6 +343,11 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
     }
 
     @Override
+    public String getServerServiceAppId(Server server) {
+        return getServerMetadata(server).get(DiscoveryMetaDataConstant.SPRING_APPLICATION_APP_ID);
+    }
+
+    @Override
     public String getServerServiceUUId(Server server) {
         return getServerMetadata(server).get(DiscoveryMetaDataConstant.SPRING_APPLICATION_UUID);
     }
@@ -395,6 +393,16 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
     }
 
     @Override
+    public boolean isServerActive(Server server) {
+        String active = getServerMetadata(server).get(DiscoveryConstant.ACTIVE);
+        if (StringUtils.isEmpty(active)) {
+            return false;
+        }
+
+        return Boolean.valueOf(active);
+    }
+
+    @Override
     public String getServerProtocol(Server server) {
         String protocol = getServerMetadata(server).get(DiscoveryMetaDataConstant.SPRING_APPLICATION_PROTOCOL);
         if (StringUtils.isEmpty(protocol)) {
@@ -419,21 +427,6 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
         String contextPath = getServerContextPath(server);
 
         return UrlUtil.formatContextPath(contextPath);
-    }
-
-    @Override
-    public boolean isServerActive(Server server) {
-        String active = getServerMetadata(server).get(DiscoveryConstant.ACTIVE);
-        if (StringUtils.isEmpty(active)) {
-            return false;
-        }
-
-        return Boolean.valueOf(active);
-    }
-
-    @Override
-    public Map<String, String> getInstanceMetadata(ServiceInstance instance) {
-        return instance.getMetadata();
     }
 
     @Override
@@ -477,6 +470,11 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
     @Override
     public String getInstanceServiceId(ServiceInstance instance) {
         return instance.getServiceId().toLowerCase();
+    }
+
+    @Override
+    public String getInstanceServiceAppId(ServiceInstance instance) {
+        return getInstanceMetadata(instance).get(DiscoveryMetaDataConstant.SPRING_APPLICATION_APP_ID);
     }
 
     @Override
@@ -525,6 +523,16 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
     }
 
     @Override
+    public boolean isInstanceActive(ServiceInstance instance) {
+        String active = getInstanceMetadata(instance).get(DiscoveryConstant.ACTIVE);
+        if (StringUtils.isEmpty(active)) {
+            return false;
+        }
+
+        return Boolean.valueOf(active);
+    }
+
+    @Override
     public String getInstanceProtocol(ServiceInstance instance) {
         String protocol = getInstanceMetadata(instance).get(DiscoveryMetaDataConstant.SPRING_APPLICATION_PROTOCOL);
         if (StringUtils.isEmpty(protocol)) {
@@ -552,19 +560,16 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
     }
 
     @Override
-    public boolean isInstanceActive(ServiceInstance instance) {
-        String active = getInstanceMetadata(instance).get(DiscoveryConstant.ACTIVE);
-        if (StringUtils.isEmpty(active)) {
-            return false;
-        }
-
-        return Boolean.valueOf(active);
+    public Map<String, String> getInstanceMetadata(ServiceInstance instance) {
+        return instance.getMetadata();
     }
 
     @Override
     public String getPluginInfo(String previousPluginInfo) {
         String plugin = getPlugin();
         String serviceId = getServiceId();
+        String serviceUUId = getServiceUUId();
+        String serviceAppId = getServiceAppId();
         String serviceType = getServiceType();
         String host = getHost();
         int port = getPort();
@@ -581,6 +586,12 @@ public abstract class AbstractPluginAdapter implements PluginAdapter {
         }
 
         stringBuilder.append("[ID=" + serviceId + "]");
+        if (StringUtils.isNotEmpty(serviceUUId)) {
+            stringBuilder.append("[UID=" + serviceUUId + "]");
+        }
+        if (StringUtils.isNotEmpty(serviceAppId)) {
+            stringBuilder.append("[AID=" + serviceAppId + "]");
+        }
         stringBuilder.append("[T=" + serviceType + "]");
         stringBuilder.append("[P=" + plugin + "]");
         stringBuilder.append("[H=" + host + ":" + port + "]");

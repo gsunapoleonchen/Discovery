@@ -22,6 +22,7 @@ import com.alibaba.cloud.nacos.NacosServiceManager;
 import com.alibaba.cloud.nacos.registry.NacosServiceRegistry;
 import com.nepxion.discovery.common.constant.DiscoveryConstant;
 import com.nepxion.discovery.common.constant.DiscoveryMetaDataConstant;
+import com.nepxion.discovery.common.context.DiscoveryMetaDataPreInstallation;
 import com.nepxion.discovery.common.entity.DiscoveryType;
 import com.nepxion.discovery.plugin.framework.adapter.ApplicationInfoAdapter;
 import com.nepxion.discovery.plugin.framework.context.PluginApplicationContextInitializer;
@@ -47,7 +48,7 @@ public class NacosApplicationContextInitializer extends PluginApplicationContext
             Map<String, String> metadata = nacosDiscoveryProperties.getMetadata();
 
             String groupKey = PluginContextAware.getGroupKey(environment);
-            if (!metadata.containsKey(groupKey)) {
+            /*if (!metadata.containsKey(groupKey)) {
                 metadata.put(groupKey, DiscoveryConstant.DEFAULT);
             }
             if (!metadata.containsKey(DiscoveryConstant.VERSION)) {
@@ -64,7 +65,7 @@ public class NacosApplicationContextInitializer extends PluginApplicationContext
             }
             if (!metadata.containsKey(DiscoveryConstant.ACTIVE)) {
                 metadata.put(DiscoveryConstant.ACTIVE, "false");
-            }
+            }*/
             String prefixGroup = getPrefixGroup(applicationContext);
             if (StringUtils.isNotEmpty(prefixGroup)) {
                 metadata.put(groupKey, prefixGroup);
@@ -86,20 +87,27 @@ public class NacosApplicationContextInitializer extends PluginApplicationContext
             metadata.put(DiscoveryMetaDataConstant.SPRING_APPLICATION_DISCOVERY_PLUGIN, DiscoveryType.NACOS.toString());
             metadata.put(DiscoveryMetaDataConstant.SPRING_APPLICATION_DISCOVERY_VERSION, DiscoveryConstant.DISCOVERY_VERSION);
             String agentVersion = System.getProperty(DiscoveryConstant.SPRING_APPLICATION_DISCOVERY_AGENT_VERSION);
-            metadata.put(DiscoveryMetaDataConstant.SPRING_APPLICATION_DISCOVERY_AGENT_VERSION, StringUtils.isEmpty(agentVersion) ? DiscoveryConstant.UNKNOWN : agentVersion);
-            metadata.put(DiscoveryMetaDataConstant.SPRING_APPLICATION_REGISTER_CONTROL_ENABLED, PluginContextAware.isRegisterControlEnabled(environment).toString());
-            metadata.put(DiscoveryMetaDataConstant.SPRING_APPLICATION_DISCOVERY_CONTROL_ENABLED, PluginContextAware.isDiscoveryControlEnabled(environment).toString());
-            metadata.put(DiscoveryMetaDataConstant.SPRING_APPLICATION_CONFIG_REST_CONTROL_ENABLED, PluginContextAware.isConfigRestControlEnabled(environment).toString());
+            if (StringUtils.isNotEmpty(agentVersion)) {
+                metadata.put(DiscoveryMetaDataConstant.SPRING_APPLICATION_DISCOVERY_AGENT_VERSION, agentVersion);
+            }
             metadata.put(DiscoveryMetaDataConstant.SPRING_APPLICATION_GROUP_KEY, groupKey);
             metadata.put(DiscoveryMetaDataConstant.SPRING_APPLICATION_CONTEXT_PATH, PluginContextAware.getContextPath(environment));
 
             try {
                 ApplicationInfoAdapter applicationInfoAdapter = applicationContext.getBean(ApplicationInfoAdapter.class);
                 if (applicationInfoAdapter != null) {
-                    metadata.put(DiscoveryMetaDataConstant.APP_ID, applicationInfoAdapter.getAppId());
+                    metadata.put(DiscoveryMetaDataConstant.SPRING_APPLICATION_APP_ID, applicationInfoAdapter.getAppId());
                 }
             } catch (Exception e) {
 
+            }
+
+            for (Map.Entry<String, String> entry : DiscoveryMetaDataPreInstallation.getMetadata().entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                if (StringUtils.isNotEmpty(value)) {
+                    metadata.put(key, value);
+                }
             }
 
             MetadataUtil.filter(metadata, environment);
